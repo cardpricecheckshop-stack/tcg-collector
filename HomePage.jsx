@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { DollarSign } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 
 const portfolioData = [
@@ -17,6 +16,12 @@ const valuableItems = [
 ];
 
 export default function HomePage() {
+  const [search, setSearch] = useState("");
+
+  const filteredItems = valuableItems.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
@@ -40,8 +45,17 @@ export default function HomePage() {
 
       <div className="pt-4">
         <h2 className="text-xl font-semibold mb-2">Most Valuable</h2>
+
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search cards..."
+          className="mb-4 w-full p-2 border border-gray-300 rounded-md"
+        />
+
         <div className="grid gap-4 md:grid-cols-2">
-          {valuableItems.map((item, index) => (
+          {filteredItems.map((item, index) => (
             <Card key={index} className="shadow-md">
               <CardContent className="p-4 flex justify-between items-center">
                 <div className="space-y-1">
